@@ -23,7 +23,7 @@ def _all(*rules):
         return all([rule(input) for rule in rules])
     return _
 
-def match_n(num_matches, *rules):
+def _match_n(num_matches, *rules):
     if type(num_matches) != int:
         raise Exception("first argument to match_n must be a number")
     def _(input):
@@ -39,7 +39,7 @@ def _not(rule):
 
 def test():
     """I just watched the extended version of all the LotR movies and it
-    has seeped into numerous elements of my existence...
+    has temporarily seeped into numerous elements of my existence...
 
     """
     print "enemy matching"
@@ -48,7 +48,7 @@ def test():
     assert enemy_matcher("I am an orc") == True
     assert enemy_matcher("I am saurumon but not an orc") == True
 
-    team_matcher = make_matcher(match_n(1,
+    team_matcher = make_matcher(_match_n(1,
                                         _all(match("frodo"), match("samwise")),
                                         _all(match("pippin"), match("mery"))))
 
