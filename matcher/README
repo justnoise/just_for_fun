@@ -1,0 +1,8 @@
+This is a little demonstration of using higher order functions to
+build string matchig rules.  I've used this approach in the past to
+build rules that take (as input) short descriptive strings and
+determine a classication (bucket) for that text.  Text that didn't
+match any rules was simply placed into an "Unknown" bucket.
+
+This approach of using closures grew out of some earlier experiments
+with parser combinators.
