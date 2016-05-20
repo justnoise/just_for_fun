@@ -1,11 +1,13 @@
 
 class Netset(object):
     """
-    Creates a prefix tree of IPs in a set each node in the tree is
-    represented by a 3 element list The first child represents a 0 in
-    the prefix tree the second child represents a 1 in the prefix tree
-    the third entry tells us if this is the terminal node of a network
-    prefix
+    Given a list of networks and IPs, creates a prefix tree
+    representing the set.  Each node in the tree is represented by a 3
+    element list. The first element in the list holds the left branch
+    in the binary tree (children with a 0 in the prefix), the second
+    element is the right branch in the tree (holding children with a 1
+    in the prefix), the third entry tells us if this is the terminal
+    node of a network prefix.
 
     A network that looks like:
     '128.0.0.0/2'
@@ -19,9 +21,21 @@ class Netset(object):
 
     or in single line form:
     [None, [[None, None, True], None, False], False]
+
+    We represent nodes using an array instead of objects because it
+    allows us to do direct lookups based on a string of values (our
+    ips are converted into lists of 1's and 0s').  Using objects would
+    require lookups into a hashtable.
     """
     def __init__(self, ips = None, match_supernet=False):
-        # todo: document matching supernets
+        """
+        ips: a list of ip addresses and networks
+        e.g. ['128.32.164.135', 54.67.0.0/16']
+
+        match_supernet: when performing lookup of a network
+        return true if that network contains a smaller network that
+        is in the set
+        """
         self.root = self._new_node()
         if ips and type(ips) not in (list, tuple):
             raise TypeError("ips must be a list or tuple")
