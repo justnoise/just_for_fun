@@ -38,9 +38,10 @@ def _not(rule):
 
 
 def test():
-    """I just watched the extended version of all the LotR movies and it
-    has temporarily seeped into numerous elements of my existence...
-
+    """
+    Having recently watched the extended version of all the LotR
+    movies, I've noticed the movie has seeped into numerous
+    elements of my existence...
     """
     print "enemy matching"
     enemy_matcher = make_matcher(_any(match("orc"), match("saurumon")))
