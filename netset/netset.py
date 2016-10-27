@@ -9,10 +9,9 @@ class Netset(object):
     in the prefix), the third entry tells us if this is the terminal
     node of a network prefix.
 
-    A network that looks like:
-    '128.0.0.0/2'
-    is represented by a bitstring of [1,0]
-    and as a prefix tree would look like
+    A network that looks like: '128.0.0.0/2' is represented by a
+    bitstring of [1,0] and as a prefix tree would look like:
+
           [None ,  , False]
                   \
             [  , None, False]
@@ -29,12 +28,14 @@ class Netset(object):
     """
     def __init__(self, ips = None, match_supernet=False):
         """
+        parameters:
+
         ips: a list of ip addresses and networks
         e.g. ['128.32.164.135', 54.67.0.0/16']
 
         match_supernet: when performing lookup of a network
         return true if that network contains a smaller network that
-        is in the set
+        is in the set.
         """
         self.root = self._new_node()
         if ips and type(ips) not in (list, tuple):
