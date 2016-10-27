@@ -3,3 +3,4 @@ A sandbox for tests, experiments and small tools.
 * learn_ruby - Small scripts written when learning ruby (farily incomplete)
 * matcher - A small DSL for matching strings and sets of words in python
 * netset - A prefix tree/trie that can be used to efficiently test if an ip or network (128.32.136.0/24) is contained within a set of networks
+* python_metaclass - A simple metaclass that can be used to easily declare default instance variables. 
