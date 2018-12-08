@@ -1,0 +1,81 @@
+#!/usr/bin/python
+
+import glob
+import os
+import shutil
+import sys
+
+
+def find_sd_card():
+    volumes = glob.glob("/Volumes/*")
+    for vol in volumes:
+        if os.path.exists(os.path.join(vol, "DCIM")):
+            return vol
+    print "Could not find a card with DCIM/ folder."
+    print "We're pissed and we're leaving (while silently judging you)"
+    print
+    print u"{}_{}".format(unichr(int(0xca0)), unichr(int(0xca0)))
+    print
+    print "EXITING"
+    sys.exit(2)
+
+sdcard = find_sd_card()
+cwd = os.getcwd()
+rawdir = os.path.join(cwd, 'RAW')
+
+def mkrawdir():
+    if not os.path.isdir(rawdir):
+        os.mkdir(rawdir)
+
+#list directories
+raw_glob = "*.RAF"
+camera_dirs = glob.glob(os.path.join(sdcard, "*_FUJI"))
+if not sd_dirs:
+    camera_dirs = glob.glob(os.path.join(sdcard, "DCIM/*_FUJI"))
+if not raw_dirs:
+    camera_dirs = glob.glob(os.path.join(sdcard, "DCIM/*RICOH"))
+    raw_glob = "*.DNG"
+print sdcard, camera_dirs
+raw_files = {}
+for camera_dir in camera_dirs:
+    for fullpath in glob.iglob(os.path.join(sdcard, camera_dir, raw_glob)):
+        filename = os.path.basename(fullpath)
+        fn, _ = os.path.splitext(filename)
+        raw_files[fn] = fullpath
+
+if not raw_files:
+    print "AAAUGH! Could not find any RAF or DNG files on your SDCARD"
+    print "Exiting..."
+    sys.exit(1)
+
+jpeg_files = glob.glob("*.JPG")
+files_copied = 0
+unfound = []
+if not jpeg_files:
+    print "That's strange... We couldn't find any .JPG files in the current directory"
+    print "Exiting..."
+    sys.exit(1)
+
+if jpeg_files:
+    mkrawdir()
+for jpeg in jpeg_files:
+    fn, _ = os.path.splitext(jpeg)
+    try:
+        path_to_raw = raw_files[fn]
+        raw_basename = os.path.basename(path_to_raw)
+        dest = os.path.join(rawdir, raw_basename)
+        if not os.path.exists(dest):
+            shutil.copyfile(path_to_raw, os.path.join(rawdir, raw_basename))
+            files_copied += 1
+        else:
+            print "skipping {}: it already exists and we are scared to overwrite stuff".format(dest)
+    except KeyError:
+        print "Could not find Raw file for {}".format(jpeg)
+        unfound.append(jpeg)
+
+print
+print "We lovingly copied {} files to the RAW directory".format(files_copied)
+if unfound:
+    print "However, there were some files we could not find. They are listed here:"
+    for u in unfound:
+        print "* {}".format(u)
