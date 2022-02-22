@@ -1,10 +1,11 @@
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const multer = require("multer");
 
 const listenPort = 8080;
 const app = express();
-const uploadDir = __dirname + "/" + uploadDir; //"uploads"
+const uploadDir = __dirname + "/" + "uploads"
 
 // View Engine Setup
 app.set("views",path.join(__dirname,"views"));
@@ -44,7 +45,7 @@ app.post("/uploadFile",function (req, res, next) {
     });
 });
 
-if (!path.existsSync(uploadDir)) {
+if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, 0744);
 }
 
